@@ -51,13 +51,11 @@ cd downloading
 ##
 ## For each file, we want to download it, and see if it differs from old one.
 ##    If it differs, we assume that it is new, and thus we want to replace the old one.
-##    Unfortunately GitHub is issuing the cert for www.github.com only and not for other
-##    domains which is why we need to ignore cert warnings
 ##
 for file in "${FILES[@]}"
 do
     logIfDebug "Downloading ${file}..."
-    wget --quiet --no-check-certificate ${file}
+    wget --quiet "${file}"
     filename=$(echo ${file} | awk -F/ '{print $NF}')
     result=$(diff --suppress-common-lines --speed-large-files -y ${filename} ../../../${filename} | wc -l)
     if [ ${result} -ne 0 ]; then
